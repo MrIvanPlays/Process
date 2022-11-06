@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.mrivanplays</groupId>
+  <artifactId>process-api</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+
+  <properties>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <inceptionYear>2022</inceptionYear>
+
+  <name>Process-API</name>
+  <description>API for scheduling processes</description>
+
+  <developers>
+    <developer>
+      <name>Ivan Pekov</name>
+      <email>ivan@mrivanplays.com</email>
+      <id>MrIvanPlays</id>
+    </developer>
+  </developers>
+
+  <licenses>
+    <license>
+      <name>MIT License</name>
+      <url>https://www.opensource.org/licenses/mit-license.php</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <distributionManagement>
+    <repository>
+      <id>ivan-releases</id>
+      <url>https://repo.mrivanplays.com/repository/ivan-releases/</url>
+    </repository>
+    <snapshotRepository>
+      <id>ivan-snapshots</id>
+      <url>https://repo.mrivanplays.com/repository/ivan-snapshots/</url>
+    </snapshotRepository>
+  </distributionManagement>
+
+  <scm>
+    <connection>scm:git:https://github.com/MrIvanPlays/Process.git</connection>
+    <developerConnection>scm:git:git@github.com:MrIvanPlays/Process.git</developerConnection>
+    <url>https://github.com/MrIvanPlays/Process</url>
+  </scm>
+
+  <profiles>
+    <profile>
+      <id>deployment</id>
+      <build>
+        <defaultGoal>clean package</defaultGoal>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.10.1</version>
+            <configuration>
+              <showDeprecation>false</showDeprecation>
+              <showWarnings>false</showWarnings>
+              <compilerArgs>
+                <arg>-parameters</arg>
+              </compilerArgs>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <version>3.2.1</version>
+            <executions>
+              <execution>
+                <id>attach-sources</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>3.4.1</version>
+            <configuration>
+              <quiet>true</quiet>
+              <detectOfflineLinks>false</detectOfflineLinks>
+              <notimestamp>true</notimestamp>
+              <linksource>true</linksource>
+              <nohelp>true</nohelp>
+              <doclint>none</doclint>
+              <source>8</source>
+            </configuration>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+</project>
