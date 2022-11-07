@@ -25,8 +25,10 @@ public abstract class Process {
 
   /**
    * Main logic for running this process.
+   *
+   * @throws Throwable if anything goes wrong, the implementation can throw any exception.
    */
-  protected abstract void run();
+  protected abstract void run() throws Throwable;
 
   // ===============================================
   private int processNum;

@@ -68,6 +68,25 @@ public final class ProcessScheduler {
   }
 
   /**
+   * Runs all the specified {@link ResultedProcess} whilst also returning a {@link
+   * ResultedProcessesCompletion}.
+   *
+   * @param processes the resulted processes to run
+   * @return a process completion
+   * @param <T> result value type parameter
+   * @see ResultedProcess
+   * @see ResultedProcessesCompletion
+   */
+  public <T> ResultedProcessesCompletion<T> runProcesses(ResultedProcess<T>... processes) {
+    ResultedProcessesCompletion<T> ret =
+        new ResultedProcessesCompletion<>(processes.length, this.async);
+    for (ResultedProcess<T> process : processes) {
+      this.async.execute(() -> process.runProcess(ret));
+    }
+    return ret;
+  }
+
+  /**
    * If an {@link ExecutorService} has been created/detected whilst this {@code ProcessScheduler}
    * was created, this will call it's {@link ExecutorService#shutdown()} method.
    */
