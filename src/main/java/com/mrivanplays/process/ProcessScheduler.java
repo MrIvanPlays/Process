@@ -77,7 +77,8 @@ public final class ProcessScheduler {
    * @see ResultedProcess
    * @see ResultedProcessesCompletion
    */
-  public <T> ResultedProcessesCompletion<T> runProcesses(ResultedProcess<T>... processes) {
+  @SafeVarargs
+  public final <T> ResultedProcessesCompletion<T> runProcesses(ResultedProcess<T>... processes) {
     ResultedProcessesCompletion<T> ret =
         new ResultedProcessesCompletion<>(processes.length, this.async);
     for (ResultedProcess<T> process : processes) {
