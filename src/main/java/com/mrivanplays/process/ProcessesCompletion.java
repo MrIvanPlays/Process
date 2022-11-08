@@ -15,7 +15,48 @@ import java.util.function.Consumer;
 public final class ProcessesCompletion {
 
   /**
+   * Runs the specified {@code callback} when all the specified {@code completions} complete.
+   *
+   * @param async whether this method to be called asynchronously or not
+   * @param callback a {@link Consumer} of the errors (if any). if there are no errors, the value
+   *     will be an empty set.
+   * @param completions completions to wait for
+   */
+  public static void whenAllDone(
+      boolean async, Consumer<Set<ProcessException>> callback, ProcessesCompletion... completions) {
+    CountDownLatch latch = new CountDownLatch(completions.length);
+    Set<ProcessException> errors = ConcurrentHashMap.newKeySet();
+    for (ProcessesCompletion completion : completions) {
+      completion.whenDoneAsync(
+          (err) -> {
+            errors.addAll(err);
+            latch.countDown();
+          });
+    }
+    if (async) {
+      // grab an async executor from somewhere
+      completions[0].asyncExecutor.execute(
+          () -> {
+            try {
+              latch.await();
+              callback.accept(errors);
+            } catch (InterruptedException e) {
+              Thread.currentThread().interrupt();
+            }
+          });
+    } else {
+      try {
+        latch.await();
+        callback.accept(errors);
+      } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
+      }
+    }
+  }
+
+  /**
    * Called when all {@link Process Proccesses} are done.
+   *
    * <p><b>WARNING: THREAD BLOCKING METHOD.</b>
    *
    * @param callback a {@link Consumer} of the errors (if any). if there are no errors, the value
